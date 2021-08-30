@@ -93,6 +93,17 @@ class DoctorController extends RestController {
 
         $data = json_decode(file_get_contents("php://input"), TRUE);
 
+        $this->form_validation->set_data( $data );
+        $this->form_validation->set_rules("phone", "Phone", "integer");
+
+        if($this->form_validation->run() === FALSE)     /* Check validation */
+        {
+            $this->response( [
+            "status" => FALSE,
+            "message" => 'Incorrect phone'
+            ] , RestController::HTTP_BAD_REQUEST );
+        }
+
         $result = $this->DoctorModel->update_doctor( $data, $id);
         if( $result )
         {

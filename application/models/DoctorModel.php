@@ -24,12 +24,16 @@ class DoctorModel extends CI_Model {
      */
     public function get_doctor( $id )
     {
-        $query_doctor = $this->db->get_where( 'doctors', array( 'id' => $id ) );
+        $doctor = $this->db->get_where( 'doctors', array( 'id' => $id ) )->row();
+
+        if( !$doctor )
+            return null;
+
         $query_patients = $this->db
                                 ->select('id, name, surname, notes')
                                 ->get_where( 'patients', array( 'id_doctor' => $id ) );
 
-        $doctor = $query_doctor->row();
+        //$doctor = $query_doctor->row();
 
         $info_doctor = [
             'id'  => $doctor->id,
